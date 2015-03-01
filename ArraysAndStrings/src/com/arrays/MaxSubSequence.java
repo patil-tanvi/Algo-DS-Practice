@@ -28,7 +28,9 @@ public class MaxSubSequence {
 	}
 	
 	
-	int arr[] = {3, 8, -2, -4, 5};
+//	int arr[] = {3, 8, -2, -4, 2};
+	
+	int arr[] = {-1, -2, -3};
 	
 //	int arr[] = {1, -1, 2, 200, -60, -8};
 	
@@ -58,8 +60,8 @@ public class MaxSubSequence {
 		
 		if(start < end){
 			int mid = (end + start) / 2;
-			int lSum = 0;
-			int rSum = 0;
+			int lSum = 0;	//Sum of left part of array
+			int rSum = 0;	//Sum of right part of array
 			
 			for(int i = start; i <= mid; i++){
 				lSum += arr[i];
@@ -69,16 +71,19 @@ public class MaxSubSequence {
 				rSum += arr[i];
 			}
 			
+			//Assign maxSequence to left part if it's current sum is less than lSum
 			if(maxSequence.sum < lSum){
 				maxSequence = new Sequence(start, mid, lSum);
 				part = ArrayPart.LEFT;
 			}
 
+			//Assign maxSequence to left part if it's current sum is less than rSum
 			if(maxSequence.sum < rSum){
 				maxSequence = new Sequence(mid + 1, end, rSum);
 				part = ArrayPart.RIGHT;
 			}
 			
+			//Assign maxSequence to left part if it's current sum is less than lSum + rSum
 			if(maxSequence.sum < lSum + rSum){
 				int total = lSum + rSum;
 				
@@ -95,12 +100,13 @@ public class MaxSubSequence {
 				part = ArrayPart.COMBINATION;
 			}
 			
+			//Make recursive call based on which part of array has max sum
 			
 			if(part == ArrayPart.LEFT){
-				getMaxSubsequence(start, mid - 1);
+				getMaxSubsequence(start, mid);
 			}
 			else if(part == ArrayPart.RIGHT){
-				getMaxSubsequence(mid, end);
+				getMaxSubsequence(mid + 1, end);
 			}
 			else if(part == ArrayPart.COMBINATION){
 				getMaxSubsequence(start, end);
